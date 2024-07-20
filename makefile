@@ -1,6 +1,7 @@
 
 .PHONY: apply destroy-backend destroy destroy-target plan-destroy plan plan-target prep
 ENV=dev
+SUBFOLDER=.
 VARS="./$(ENV).tfvars"
 CURRENT_FOLDER=$(shell basename "$$(pwd)")
 WORKSPACE="$(ENV)"
@@ -9,7 +10,6 @@ RED=$(shell tput setaf 1)
 GREEN=$(shell tput setaf 2)
 YELLOW=$(shell tput setaf 3)
 RESET=$(shell tput sgr0)
-SUBFOLDER ?= .
 
 help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
@@ -38,23 +38,20 @@ format: prep ## Rewrites all Terraform configuration files to a canonical format
 
 # https://github.com/terraform-linters/tflint
 lint: prep ## Check for possible errors best practices
-	@tflint
+	@docker-compose run --rm build tflint
 
 # https://github.com/liamg/tfsec
 check-security: prep ## Static analysis of your terraform templates to spot potential security issues.
-	@tfsec .
+	@docker-compose run --rm build tfsec .
 
 documentation: prep ## Generate README.md 
-	@terraform-docs markdown table --sort-by-required  . > README.md
+	@docker-compose run --rm build terraform-docs markdown table --sort-by-required  . > README.md
 
 plan: prep ## Show deployment plan
-	terraform plan \
-		-var-file="$(VARS)" 
+	@docker-compose run --rm build terraform plan -var-file="$(VARS)" 
 
 apply: prep ## Deploy resources
-	@terraform apply \
-		-var-file="$(VARS)"
+	@docker-compose run --rm build terraform apply -var-file="$(VARS)"
 
 destroy: prep ## Destroy resources
-	@terraform destroy \
-		-var-file="$(VARS)"
+	@docker-compose run --rm build terraform destroy -var-file="$(VARS)"

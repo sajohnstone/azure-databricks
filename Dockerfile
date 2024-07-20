@@ -24,6 +24,7 @@ USER linuxbrew
 # Install tooling using Homebrew
 RUN brew install terraform
 RUN brew install tflint
+RUN brew install tfsec
 # Verify installations
 RUN terraform --version
 RUN tflint --version
