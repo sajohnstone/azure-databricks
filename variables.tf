@@ -19,7 +19,7 @@ variable "project" {
 }
 
 variable "databricks_sku" {
-  type = string
+  type        = string
   description = "(Optional) The SKU to use for the databricks instance"
   validation {
     condition     = can(regex("standard|premium|trial", var.databricks_sku))

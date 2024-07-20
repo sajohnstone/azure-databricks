@@ -1,5 +1,6 @@
 
 .PHONY: apply destroy-backend destroy destroy-target plan-destroy plan plan-target prep
+ENV=dev
 VARS="./$(ENV).tfvars"
 CURRENT_FOLDER=$(shell basename "$$(pwd)")
 WORKSPACE="$(ENV)"
@@ -8,6 +9,7 @@ RED=$(shell tput setaf 1)
 GREEN=$(shell tput setaf 2)
 YELLOW=$(shell tput setaf 3)
 RESET=$(shell tput sgr0)
+SUBFOLDER ?= .
 
 help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
@@ -27,12 +29,12 @@ set-env:
 	 fi
 
 prep: set-env
-	@terraform init
+	@docker-compose run --rm build terraform init
 	@echo "$(BOLD)Switching to workspace $(WORKSPACE)$(RESET)"
-	@terraform workspace select $(WORKSPACE) || terraform workspace new $(WORKSPACE)
-
+	@docker-compose run --rm build terraform workspace select $(WORKSPACE) || @docker-compose run --rm build terraform workspace new $(WORKSPACE)
+	
 format: prep ## Rewrites all Terraform configuration files to a canonical format.
-	@terraform fmt -write=true -recursive
+	@docker-compose run --rm build terraform fmt -write=true -recursive
 
 # https://github.com/terraform-linters/tflint
 lint: prep ## Check for possible errors best practices

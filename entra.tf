@@ -1,11 +1,8 @@
-resource "random_password" "service_principal" {
-  length  = 16
-  special = true
-}
+
 
 resource "azurerm_key_vault_secret" "service_principal" {
   name         = "service-principal-password"
-  value        = random_password.service_principal.result
+  value        = azuread_service_principal_password.this.value
   key_vault_id = azurerm_key_vault.this.id
 }
 
@@ -15,13 +12,12 @@ resource "azuread_application" "this" {
 }
 
 resource "azuread_service_principal" "this" {
-  application_id               = azuread_application.this.application_id
+  client_id                    = azuread_application.this.client_id
   app_role_assignment_required = false
 }
 
 resource "azuread_service_principal_password" "this" {
   service_principal_id = azuread_service_principal.this.id
-  value                = azurerm_key_vault_secret.service_principal.value
 }
 
 resource "azurerm_role_assignment" "this" {
