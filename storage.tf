@@ -6,6 +6,7 @@ resource "azurerm_storage_account" "this" {
   account_tier             = "Standard"
   account_replication_type = "LRS"
   account_kind             = "BlobStorage"
+  min_tls_version          = "TLS1_2"
 }
 
 resource "azurerm_storage_data_lake_gen2_filesystem" "this" {

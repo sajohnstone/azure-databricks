@@ -6,5 +6,7 @@ services:
     volumes:
       - .:/work
       - ~/.ssh:/root/.ssh
-      - ~/.aws:/root/.aws     
+      - ~/.aws:/root/.aws
+      - ~/.azure:/root/.azure
+    tty: true  
     working_dir: /work/${SUBFOLDER}

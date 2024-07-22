@@ -14,6 +14,9 @@ RESET=$(shell tput sgr0)
 help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
+shell:
+	@docker-compose run --rm build /bin/bash   
+
 set-env:
 	@if [ -z $(ENV) ]; then \
 		echo "$(BOLD)$(RED)ENV was not set$(RESET)"; \

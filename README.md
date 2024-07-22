@@ -3,5 +3,9 @@
 An example Terraform Databricks deployment.
 
 '''bash
-ENV=dev make plan
+make plan
+'''
+
+'''bash
+make apply
 '''

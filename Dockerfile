@@ -23,11 +23,14 @@ RUN useradd -m -s /bin/bash linuxbrew && \
 USER linuxbrew
 # Install tooling using Homebrew
 RUN brew install terraform
+RUN brew install azure-cli
 RUN brew install tflint
 RUN brew install tfsec
 # Verify installations
 RUN terraform --version
 RUN tflint --version
+# Switch back to root
+USER root
 # Set working dir
 WORKDIR /work
 # Default command
