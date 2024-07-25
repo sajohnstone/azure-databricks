@@ -1,4 +1,6 @@
 data "databricks_node_type" "smallest" {
+  provider = databricks.workspace
+
   local_disk = true
   depends_on = [
     azurerm_databricks_workspace.this
@@ -6,6 +8,8 @@ data "databricks_node_type" "smallest" {
 }
 
 data "databricks_spark_version" "latest_lts" {
+  provider = databricks.workspace
+
   long_term_support = true
   depends_on = [
     azurerm_databricks_workspace.this
@@ -13,8 +17,9 @@ data "databricks_spark_version" "latest_lts" {
 }
 
 resource "databricks_cluster" "this" {
-  cluster_name = format("dbsc-%s-%s-%s",
-  local.naming.location[var.location], var.environment, var.project)
+  provider = databricks.workspace
+
+  cluster_name            = "dbsc-${local.name_prefix}"
   spark_version           = data.databricks_spark_version.latest_lts.id
   node_type_id            = data.databricks_node_type.smallest.id
   autotermination_minutes = 20

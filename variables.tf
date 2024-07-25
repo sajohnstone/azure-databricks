@@ -18,6 +18,16 @@ variable "project" {
   description = "(Required) The project name"
 }
 
+variable "metastore_id" {
+  type        = string
+  description = "(Required) The ID of the Metastore"
+}
+
+variable "databricks_account_id" {
+  type        = string
+  description = "(Required) The ID of the Databricks"
+}
+
 variable "databricks_sku" {
   type        = string
   description = "(Optional) The SKU to use for the databricks instance"
@@ -25,4 +35,9 @@ variable "databricks_sku" {
     condition     = can(regex("standard|premium|trial", var.databricks_sku))
     error_message = "Err: Valid options are ‘standard’, ‘premium’ or ‘trial’."
   }
+}
+
+variable "azure_subscription_id" {
+  type        = string
+  description = "The ID of the Azure subscription"
 }

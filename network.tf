@@ -1,6 +1,5 @@
 resource "azurerm_virtual_network" "this" {
-  name = format("vn-%s-%s-%s",
-  local.naming.location[var.location], var.environment, var.project)
+  name = "${local.name_prefix}"
 
   location            = azurerm_resource_group.this.location
   resource_group_name = azurerm_resource_group.this.name
@@ -9,8 +8,7 @@ resource "azurerm_virtual_network" "this" {
 }
 
 resource "azurerm_subnet" "private" {
-  name = format("sn-%s-%s-%s-priv",
-  local.naming.location[var.location], var.environment, var.project)
+  name = "${local.name_prefix}"
 
   resource_group_name  = azurerm_resource_group.this.name
   virtual_network_name = azurerm_virtual_network.this.name
@@ -31,8 +29,7 @@ resource "azurerm_subnet" "private" {
 }
 
 resource "azurerm_network_security_group" "private" {
-  name = format("nsg-%s-%s-%s-priv",
-  local.naming.location[var.location], var.environment, var.project)
+  name = "${local.name_prefix}-pri"
 
   resource_group_name = azurerm_resource_group.this.name
   location            = azurerm_resource_group.this.location
@@ -44,8 +41,7 @@ resource "azurerm_subnet_network_security_group_association" "private" {
 }
 
 resource "azurerm_subnet" "public" {
-  name = format("sn-%s-%s-%s-pub",
-  local.naming.location[var.location], var.environment, var.project)
+  name = "${local.name_prefix}-pub"
 
   resource_group_name  = azurerm_resource_group.this.name
   virtual_network_name = azurerm_virtual_network.this.name
@@ -66,8 +62,7 @@ resource "azurerm_subnet" "public" {
 }
 
 resource "azurerm_network_security_group" "public" {
-  name = format("nsg-%s-%s-%s-pub",
-  local.naming.location[var.location], var.environment, var.project)
+  name = "${local.name_prefix}-pub"
 
   resource_group_name = azurerm_resource_group.this.name
   location            = azurerm_resource_group.this.location

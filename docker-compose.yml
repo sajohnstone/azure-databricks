@@ -8,5 +8,6 @@ services:
       - ~/.ssh:/root/.ssh
       - ~/.aws:/root/.aws
       - ~/.azure:/root/.azure
+      - ~/.databrickscfg:/root/.databrickscfg
     tty: true  
     working_dir: /work/${SUBFOLDER}

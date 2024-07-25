@@ -26,6 +26,8 @@ RUN brew install terraform
 RUN brew install azure-cli
 RUN brew install tflint
 RUN brew install tfsec
+RUN brew tap databricks/tap
+RUN brew install databricks
 # Verify installations
 RUN terraform --version
 RUN tflint --version
