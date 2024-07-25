@@ -19,7 +19,7 @@ data "databricks_spark_version" "latest_lts" {
 resource "databricks_cluster" "this" {
   provider = databricks.workspace
 
-  cluster_name            = "dbsc-${local.name_prefix}"
+  cluster_name            = "${local.name_prefix}"
   spark_version           = data.databricks_spark_version.latest_lts.id
   node_type_id            = data.databricks_node_type.smallest.id
   autotermination_minutes = 20
