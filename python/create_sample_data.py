@@ -1,3 +1,6 @@
+import random
+from pyspark.sql.types import StructType, StructField, IntegerType, StringType, FloatType
+
 # Define the catalog to use
 catalog_name = "dev_stutest_sandbox"
 
@@ -15,3 +18,21 @@ CREATE TABLE IF NOT EXISTS example_schema.example_table (
   value FLOAT
 )
 """)
+
+# Define schema
+schema = StructType([
+    StructField("id", IntegerType(), nullable=False),
+    StructField("name", StringType(), nullable=False),
+    StructField("value", FloatType(), nullable=True)
+])
+
+# Generate sample data
+data = [
+    (i, f"Name_{i}", random.uniform(0.0, 100.0)) for i in range(1, 101)
+]
+
+# Create DataFrame
+df = spark.createDataFrame(data, schema)
+
+# Write DataFrame to table
+df.write.mode("append").saveAsTable("example_schema.example_table")

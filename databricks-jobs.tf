@@ -1,15 +1,16 @@
 resource "databricks_job" "catalog_migration" {
   provider = databricks.workspace
-
   name = "catalog-migration"
 
-  new_cluster {
-    cluster_name  = local.name_prefix
-    spark_version = data.databricks_spark_version.latest_lts.id
-    node_type_id  = data.databricks_node_type.smallest.id
-    num_workers = 1
-  }
 
+  parameter {
+      name  = "source_catalog"
+      default = databricks_catalog.sandbox.name
+  }
+  parameter {
+    name  = "target_catalog"
+    default = databricks_catalog.sandbox_new.name
+  }
 
   task {
     task_key = "create-sample-data"
@@ -20,6 +21,9 @@ resource "databricks_job" "catalog_migration" {
 
   task {
     task_key = "migrate-schema"
+    depends_on {
+      task_key = "create-sample-data"
+    }
     notebook_task {
       notebook_path = databricks_notebook.migrate_schema.path
     }
@@ -27,6 +31,9 @@ resource "databricks_job" "catalog_migration" {
 
   task {
     task_key = "migrate-data"
+    depends_on {
+      task_key = "migrate-schema"
+    }
     notebook_task {
       notebook_path = databricks_notebook.migrate_data.path
     }

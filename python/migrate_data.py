@@ -1,10 +1,11 @@
 # Databricks notebook source
-
-source_catalog = "dev_stutest_sandbox"
-target_catalog = "dev_stutest_sandbox_new"
+dbutils.widgets.text("source_catalog", "")
+dbutils.widgets.text("target_catalog", "")
+source_catalog = dbutils.widgets.get("source_catalog")
+target_catalog = dbutils.widgets.get("target_catalog")
 
 # Get all schemas in the source catalog, excluding 'information_schema'
-schemas = [schema['namespace'] for schema in spark.sql(f"SHOW SCHEMAS IN {source_catalog}").collect() if schema['namespace'] != 'information_schema']
+schemas = [schema['databaseName'] for schema in spark.sql(f"SHOW SCHEMAS IN {source_catalog}").collect() if schema['databaseName'] != 'information_schema']
 
 # Iterate through each schema
 for schema_name in schemas:

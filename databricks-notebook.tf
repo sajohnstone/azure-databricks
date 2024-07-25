@@ -10,7 +10,7 @@ resource "databricks_notebook" "migrate_schema" {
   provider = databricks.workspace
   
   content_base64 = base64encode(file("./python/migrate_schema.py"))
-  path           = "/code/create_sample_data"
+  path           = "/code/migrate_schema"
   language       = "PYTHON"
 }
 
@@ -18,6 +18,6 @@ resource "databricks_notebook" "migrate_data" {
   provider = databricks.workspace
   
   content_base64 = base64encode(file("./python/migrate_data.py"))
-  path           = "/code/create_sample_data"
+  path           = "/code/migrate_data"
   language       = "PYTHON"
 }
