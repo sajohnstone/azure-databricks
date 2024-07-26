@@ -1,5 +1,5 @@
 
-.PHONY: apply destroy-backend destroy destroy-target plan-destroy plan plan-target prep
+.PHONY: plan apply destory documentation check-security shell format lint format prep
 ENV=dev
 SUBFOLDER=.
 VARS="./$(ENV).tfvars"
@@ -13,9 +13,6 @@ RESET=$(shell tput sgr0)
 
 help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
-
-shell:
-	@docker-compose run --rm build /bin/bash   
 
 set-env:
 	@if [ -z $(ENV) ]; then \
@@ -44,6 +41,10 @@ lint: prep ## Check for possible errors best practices
 	@docker-compose run --rm build tflint
 
 # https://github.com/liamg/tfsec
+
+shell: ## Grants shell access to the Docker image for debugging
+	@docker-compose run --rm build /bin/bash
+
 check-security: prep ## Static analysis of your terraform templates to spot potential security issues.
 	@docker-compose run --rm build tfsec .
 

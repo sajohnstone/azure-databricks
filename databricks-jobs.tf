@@ -1,14 +1,15 @@
 resource "databricks_job" "catalog_migration" {
   provider = databricks.workspace
-  name = "catalog-migration"
 
+  name                = "catalog-migration"
+  existing_cluster_id = databricks_cluster.this.id
 
   parameter {
-      name  = "source_catalog"
-      default = databricks_catalog.sandbox.name
+    name    = "source_catalog"
+    default = databricks_catalog.sandbox.name
   }
   parameter {
-    name  = "target_catalog"
+    name    = "target_catalog"
     default = databricks_catalog.sandbox_new.name
   }
 
@@ -20,22 +21,22 @@ resource "databricks_job" "catalog_migration" {
   }
 
   task {
-    task_key = "migrate-schema"
+    task_key = "migrate-data"
     depends_on {
       task_key = "create-sample-data"
     }
     notebook_task {
-      notebook_path = databricks_notebook.migrate_schema.path
+      notebook_path = databricks_notebook.migrate_data.path
     }
   }
 
   task {
-    task_key = "migrate-data"
+    task_key = "run-tests"
     depends_on {
-      task_key = "migrate-schema"
+      task_key = "migrate-data"
     }
     notebook_task {
-      notebook_path = databricks_notebook.migrate_data.path
+      notebook_path = databricks_notebook.run_tests.path
     }
   }
   depends_on = [databricks_cluster.this]

@@ -1,17 +1,47 @@
 # Databricks notebook source
-dbutils.widgets.text("source_catalog", "")
-dbutils.widgets.text("target_catalog", "")
+
+# Install Pip
+%pip install dbl-discoverx==0.0.8
+dbutils.library.restartPython()
+
+# Get parameters
+dbutils.widgets.text("source_catalog", "dev_stutest_sandbox")
+dbutils.widgets.text("target_catalog", "dev_stutest_sandbox_new")
 source_catalog = dbutils.widgets.get("source_catalog")
 target_catalog = dbutils.widgets.get("target_catalog")
 
-# Get all schemas in the source catalog, excluding 'information_schema'
-schemas = [schema['databaseName'] for schema in spark.sql(f"SHOW SCHEMAS IN {source_catalog}").collect() if schema['databaseName'] != 'information_schema']
+# Import databrickslabs / discoverx 
+from discoverx import DX
+dx = DX()
 
-# Iterate through each schema
-for schema_name in schemas:
-    # Get all tables in the current schema
-    tables = spark.sql(f"SHOW TABLES IN {source_catalog}.{schema_name}").collect()
-    for table in tables:
-        table_name = table['tableName']
-        # Insert data from source table to target table
-        spark.sql(f"INSERT INTO {target_catalog}.{schema_name}.{table_name} SELECT * FROM {source_catalog}.{schema_name}.{table_name}")
+# Catalog should already exist but if not create
+#spark.sql(f"CREATE CATALOG IF NOT EXISTS {destination_catalog}")
+
+# Use DEEP clone to recreate the table
+def clone_tables(table_info):
+    spark.sql(f"CREATE SCHEMA IF NOT EXISTS {target_catalog}.{table_info.schema}")
+    try:
+        spark.sql(
+            f"""CREATE OR REPLACE TABLE 
+    {target_catalog}.{table_info.schema}.{table_info.table} 
+    CLONE {table_info.catalog}.{table_info.schema}.{table_info.table}
+    """
+        )
+        result = {
+            "source": f"{table_info.catalog}.{table_info.schema}.{table_info.table}",
+            "destination": f"{target_catalog}.{table_info.schema}.{table_info.table}",
+            "success": True,
+            "info": None,
+        }
+    # Cloning Views is not supported
+    except Exception as error:
+        result = {
+            "source": f"{table_info.catalog}.{table_info.schema}.{table_info.table}",
+            "destination": f"{target_catalog}.{table_info.schema}.{table_info.table}",
+            "success": False,
+            "info": error,
+        }
+    return result
+
+# Process the tables
+res = dx.from_tables(f"{source_catalog}.*.*").map(clone_tables)

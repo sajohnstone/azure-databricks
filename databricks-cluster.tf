@@ -19,15 +19,14 @@ data "databricks_spark_version" "latest_lts" {
 resource "databricks_cluster" "this" {
   provider = databricks.workspace
 
-  cluster_name            = "${local.name_prefix}"
+  cluster_name            = local.name_prefix
   spark_version           = data.databricks_spark_version.latest_lts.id
   node_type_id            = data.databricks_node_type.smallest.id
   autotermination_minutes = 20
-  spark_conf = {
-    "spark.databricks.cluster.profile" : "singleNode"
-    "spark.master" : "local[*]"
-  }
-  custom_tags = {
-    "ResourceClass" = "SingleNode"
+  num_workers             = 2
+  data_security_mode      = "USER_ISOLATION"
+  autoscale {
+    min_workers = 1
+    max_workers = 3
   }
 }

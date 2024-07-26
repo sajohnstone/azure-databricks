@@ -1,5 +1,5 @@
 resource "azurerm_storage_account" "this" {
-  name                     = "${local.name_prefix_short}"
+  name                     = local.name_prefix_short
   resource_group_name      = azurerm_resource_group.this.name
   location                 = azurerm_resource_group.this.location
   account_tier             = "Standard"
