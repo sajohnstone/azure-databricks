@@ -28,6 +28,7 @@ RUN brew install tflint
 RUN brew install tfsec
 RUN brew tap databricks/tap
 RUN brew install databricks
+RUN brew install terraform-docs
 # Verify installations
 RUN terraform --version
 RUN tflint --version
