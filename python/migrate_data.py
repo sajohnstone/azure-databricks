@@ -24,7 +24,7 @@ def clone_tables(table_info):
         spark.sql(
             f"""CREATE OR REPLACE TABLE 
     {target_catalog}.{table_info.schema}.{table_info.table} 
-    CLONE {table_info.catalog}.{table_info.schema}.{table_info.table}
+    DEEP CLONE {table_info.catalog}.{table_info.schema}.{table_info.table}
     """
         )
         result = {
