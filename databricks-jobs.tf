@@ -6,11 +6,11 @@ resource "databricks_job" "catalog_migration" {
 
   parameter {
     name    = "source_catalog"
-    default = databricks_catalog.sandbox.name
+    default = module.sandbox.catalog_name
   }
   parameter {
     name    = "target_catalog"
-    default = databricks_catalog.sandbox_new.name
+    default = module.sandbox_new.catalog_name
   }
 
   task {

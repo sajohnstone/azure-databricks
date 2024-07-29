@@ -1,36 +1,38 @@
-resource "databricks_catalog" "sandbox" {
-  provider = databricks.workspace
-
-  metastore_id = var.metastore_id
-  name         = "${var.environment}_${var.project}_sandbox"
-  comment      = "this catalog is managed by terraform"
-  #owner        = databricks_group.uc_admins.display_name
-
-  properties = {
-    purpose = "testing"
+module "sandbox" {
+  source   = "./modules/databricks-catalog"
+  providers = {
+    databricks.workspace = databricks.workspace
+    databricks.account   = databricks.account
   }
+
+  name                = "${var.environment}_${var.project}_sandbox"
+  resource_group_name = azurerm_resource_group.this.name
+  location            = azurerm_resource_group.this.location
+  metastore_id        = var.metastore_id
+  use_storage_account = false
 
   depends_on = [
     databricks_metastore_assignment.this
   ]
 }
 
-resource "databricks_catalog" "sandbox_new" {
-  provider = databricks.workspace
-
-  metastore_id = var.metastore_id
-  name         = "${var.environment}_${var.project}_sandbox_new"
-  comment      = "this catalog is managed by terraform"
-  #owner        = databricks_group.uc_admins.display_name
-  storage_root = "abfss://${azurerm_storage_container.this.name}@${azurerm_storage_account.this.name}.dfs.core.windows.net/"
-
-  properties = {
-    purpose = "testing"
+module "sandbox_new" {
+  source   = "./modules/databricks-catalog"
+  providers = {
+    databricks.workspace = databricks.workspace
+    databricks.account   = databricks.account
   }
 
+  name                = "${var.environment}_${var.project}_sandbox_new"
+  resource_group_name = azurerm_resource_group.this.name
+  location            = azurerm_resource_group.this.location
+  metastore_id        = var.metastore_id
+  use_storage_account = true
+
+  storage_account_name = "${local.name_prefix_short}sa"
+  container_name       = "data"
+
   depends_on = [
-    databricks_metastore_assignment.this,
-    azurerm_storage_account.this,
-    databricks_external_location.external
+    databricks_metastore_assignment.this
   ]
 }
