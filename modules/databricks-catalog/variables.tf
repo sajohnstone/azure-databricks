@@ -3,6 +3,18 @@ variable "name" {
   description = "The name of the Databricks catalog to be created."
 }
 
+variable "location" {
+  type        = string
+  description = "The Azure region where the resources will be created."
+  default     = null
+}
+
+variable "resource_group_name" {
+  type        = string
+  description = "The name of the Azure Resource Group in which the resources will be created."
+  default     = null
+}
+
 variable "metastore_id" {
   type        = string
   description = "The unique identifier of the Metastore to which the catalog belongs."
@@ -43,18 +55,6 @@ variable "tags" {
   type        = map(string)
   description = "A map of tags to assign to the resources."
   default     = {}
-}
-
-variable "location" {
-  type        = string
-  description = "The Azure region where the resources will be created."
-  default     = null
-}
-
-variable "resource_group_name" {
-  type        = string
-  description = "The name of the Azure Resource Group in which the resources will be created."
-  default     = null
 }
 
 variable "account_replication_type" {
