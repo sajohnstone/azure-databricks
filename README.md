@@ -19,7 +19,12 @@ This project provides Terraform configurations to deploy an example Databricks e
 
 ### Docker Setup
 
-The Docker container is configured to run Terraform and other tooling required for this project. It will map a volume to bring in the credentials for Azure and Databricks but you will either need to configure these prior to running or update the use the appropriate secrets. 
+The Docker container is configured to run Terraform and other tooling required for this project. It will map a volume to bring in the credentials for Azure and Databricks but you will either need to configure these prior to running or update the use the appropriate secrets.
+
+### Repo Setup
+
+- **`core`**: Install this first as this creates a VNet and Bastion that can be used to deploy databricks
+- **`databricks`**: If you enable full PrivateLink then you need to deploy from within your Azure VNet or it will fail.  
 
 ### Commands
 
