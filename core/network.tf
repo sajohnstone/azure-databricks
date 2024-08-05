@@ -60,8 +60,8 @@ resource "azurerm_subnet_network_security_group_association" "abw-subnets" {
 }
 
 module "vnet_peering" {
-  source  = "claranet/vnet-peering/azurerm"
-  version = "5.1.0"
+  source   = "claranet/vnet-peering/azurerm"
+  version  = "5.1.0"
   for_each = local.network.peerings
 
   providers = {
