@@ -41,3 +41,23 @@ variable "azure_subscription_id" {
   type        = string
   description = "The ID of the Azure subscription"
 }
+
+variable "databricks_vnet_name" {
+  type        = string
+}
+
+variable "databricks_vnet_rg_name" {
+  type        = string
+}
+
+variable "databricks_private_subnet" {
+  type        = string
+}
+
+variable "databricks_public_subnet" {
+  type        = string
+}
+
+variable "databricks_privatelink_subnet" {
+  type        = string
+}

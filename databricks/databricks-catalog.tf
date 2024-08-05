@@ -1,5 +1,5 @@
 module "sandbox" {
-  source   = "./modules/databricks-catalog"
+  source = "./modules/databricks-catalog"
   providers = {
     databricks.workspace = databricks.workspace
     databricks.account   = databricks.account
@@ -17,7 +17,7 @@ module "sandbox" {
 }
 
 module "sandbox_new" {
-  source   = "./modules/databricks-catalog"
+  source = "./modules/databricks-catalog"
   providers = {
     databricks.workspace = databricks.workspace
     databricks.account   = databricks.account
