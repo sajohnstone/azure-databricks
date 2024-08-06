@@ -19,10 +19,11 @@ resource "azurerm_private_endpoint" "frontend" {
   }
 }
 
+/*
 resource "azurerm_private_dns_a_record" "databricks_ui_api" {
   count = var.use_frontend_privatelink == true ? 1 : 0
 
-  name                = lower("adb-${var.workspace_id}.${var.location}.${azurerm_private_dns_zone.this.name}")
+  name                = lower(var.name)
   zone_name           = azurerm_private_dns_zone.this.name
   resource_group_name = var.resource_group_name
   ttl                 = 300
@@ -42,3 +43,4 @@ resource "azurerm_private_dns_a_record" "browser_authentication" {
 
   depends_on = [azurerm_private_endpoint.frontend[0], azurerm_private_dns_zone.this]
 }
+*/
