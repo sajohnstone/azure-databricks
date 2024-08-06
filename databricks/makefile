@@ -29,34 +29,34 @@ set-env:
 	 fi
 
 prep: set-env
-	@docker-compose run --rm build terraform init
+	@podman-compose run --rm build terraform init
 	@echo "$(BOLD)Switching to workspace $(WORKSPACE)$(RESET)"
-	@docker-compose run --rm build terraform workspace select $(WORKSPACE) || terraform workspace new $(WORKSPACE)
+	@podman-compose run --rm build terraform workspace select $(WORKSPACE) || terraform workspace new $(WORKSPACE)
 	
 format: prep ## Rewrites all Terraform configuration files to a canonical format.
-	@docker-compose run --rm build terraform fmt -write=true -recursive
+	@podman-compose run --rm build terraform fmt -write=true -recursive
 
 # https://github.com/terraform-linters/tflint
 lint: prep ## Check for possible errors best practices
-	@docker-compose run --rm build tflint
+	@podman-compose run --rm build tflint
 
 # https://github.com/liamg/tfsec
 
 shell: ## Grants shell access to the Docker image for debugging
-	@docker-compose run --rm build /bin/bash
+	@podman-compose run --rm build /bin/bash
 
 check-security: prep ## Static analysis of your terraform templates to spot potential security issues.
-	@docker-compose run --rm build tfsec .
+	@podman-compose run --rm build tfsec .
 
 documentation: prep ## Generate README.md 
-	@docker-compose run --rm build terraform-docs markdown table --output-file README.md --output-mode inject . 
+	@podman-compose run --rm build terraform-docs markdown table --output-file README.md --output-mode inject . 
 
 
 plan: prep ## Show deployment plan
-	@docker-compose run --rm build terraform plan -var-file="$(VARS)" 
+	@podman-compose run --rm build terraform plan -var-file="$(VARS)" 
 
 apply: prep ## Deploy resources
-	@docker-compose run --rm build terraform apply -var-file="$(VARS)"
+	@podman-compose run --rm build terraform apply -var-file="$(VARS)"
 
 destroy: prep ## Destroy resources
-	@docker-compose run --rm build terraform destroy -var-file="$(VARS)"
+	@podman-compose run --rm build terraform destroy -var-file="$(VARS)"
