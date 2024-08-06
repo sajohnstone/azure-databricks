@@ -61,3 +61,15 @@ variable "databricks_public_subnet" {
 variable "databricks_privatelink_subnet" {
   type        = string
 }
+
+variable "public_subnet_nsg_id" {
+  description = "The the ID of the NSG associated with the public subnet."
+  type        = string
+  default     = null
+}
+
+variable "private_subnet_nsg_id" {
+  description = "The the ID of the NSG associated with the public subnet."
+  type        = string
+  default     = null
+}
