@@ -31,13 +31,13 @@ variable "workspace_id" {
 }
 
 variable "use_frontend_privatelink" {
-  type        = string
+  type        = bool
   description = "Turns on frontend private link."
   default     = true
 }
 
 variable "use_backend_privatelink" {
-  type        = string
+  type        = bool
   description = "Turns on backend private link."
   default     = true
 }
