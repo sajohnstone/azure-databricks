@@ -20,7 +20,7 @@ variable "private_link_subnet_name" {
   description = "The name of the subnet where privatelinks should reside."
 }
 
-variable "virtual_network_id" {
+variable "databricks_vnet_name" {
   type        = string
   description = "The VNet id used for PrivateLink."
 }

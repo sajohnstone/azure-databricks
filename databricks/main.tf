@@ -10,7 +10,7 @@ module "privatelink" {
   name                     = "${local.name_prefix}"
   resource_group_name      = azurerm_resource_group.this.name
   location                 = azurerm_resource_group.this.location
-  virtual_network_id       = data.azurerm_virtual_network.this.id
+  databricks_vnet_name       = data.azurerm_virtual_network.this.name
   private_link_subnet_name = data.azurerm_subnet.privatelink.name
   workspace_id             = azurerm_databricks_workspace.this.id
   use_frontend_privatelink = true

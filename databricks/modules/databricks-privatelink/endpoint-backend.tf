@@ -4,7 +4,7 @@ resource "azurerm_private_endpoint" "backend" {
   name                = var.name
   location            = var.location
   resource_group_name = var.resource_group_name
-  subnet_id           = var.private_link_subnet_name
+  subnet_id           = data.azurerm_subnet.privatelink.id
 
   # Configure the private service connection
   private_service_connection {
