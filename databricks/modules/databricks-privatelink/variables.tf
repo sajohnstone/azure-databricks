@@ -15,7 +15,7 @@ variable "resource_group_name" {
   default     = null
 }
 
-variable "private_link_subnet_name" {
+variable "databricks_privatelink_subnet" {
   type        = string
   description = "The name of the subnet where privatelinks should reside."
 }
@@ -40,4 +40,9 @@ variable "use_backend_privatelink" {
   type        = bool
   description = "Turns on backend private link."
   default     = true
+}
+
+variable "databricks_vnet_rg_name" {
+  type        = string
+  description = "The name of the resource group where the vnet sits."
 }
