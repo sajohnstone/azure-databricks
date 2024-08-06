@@ -22,7 +22,7 @@ resource "azurerm_private_endpoint" "frontend" {
 resource "azurerm_private_dns_a_record" "databricks_ui_api" {
   count = var.use_frontend_privatelink == true ? 1 : 0
 
-  name                = "adb-${var.workspace_id}.${var.location}.${azurerm_private_dns_zone.this.name}"
+  name                = lower("adb-${var.workspace_id}.${var.location}.${azurerm_private_dns_zone.this.name}")
   zone_name           = azurerm_private_dns_zone.this.name
   resource_group_name = var.resource_group_name
   ttl                 = 300
@@ -34,7 +34,7 @@ resource "azurerm_private_dns_a_record" "databricks_ui_api" {
 resource "azurerm_private_dns_a_record" "browser_authentication" {
   count = var.use_frontend_privatelink == true ? 1 : 0
 
-  name                = "adb-${var.workspace_id}.2.${var.location}.${azurerm_private_dns_zone.this.name}"
+  name                = lower("adb-${var.workspace_id}.2.${var.location}.${azurerm_private_dns_zone.this.name}")
   zone_name           = azurerm_private_dns_zone.this.name
   resource_group_name = var.resource_group_name
   ttl                 = 300
