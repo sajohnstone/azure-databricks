@@ -14,8 +14,11 @@ resource "azurerm_private_dns_zone_virtual_network_link" "databricks-frontend" {
   private_dns_zone_name = azurerm_private_dns_zone.databricks-frontend[0].name
   virtual_network_id    = var.virtual_network_id
   registration_enabled  = false
+
+  depends_on = [ azurerm_private_endpoint.frontend[0] ]
 }
 
+/*
 # Backend
 resource "azurerm_private_dns_zone" "databricks-backend" {
   count    = var.use_backend_privatelink == true ? 1 : 0
@@ -33,3 +36,4 @@ resource "azurerm_private_dns_zone_virtual_network_link" "databricks-backend" {
   virtual_network_id    = var.virtual_network_id
   registration_enabled  = false
 }
+*/

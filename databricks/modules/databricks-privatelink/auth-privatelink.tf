@@ -20,6 +20,8 @@ resource "azurerm_private_dns_a_record" "databricks_ui_api" {
   resource_group_name = var.resource_group_name
   ttl                 = 300
   records             = [azurerm_private_endpoint.frontend[0].private_service_connection[0].private_ip_address]
+
+  depends_on = [ azurerm_private_endpoint.frontend[0] , azurerm_private_dns_zone.databricks-frontend[0]]
 }
 
 resource "azurerm_private_dns_a_record" "browser_authentication" {
@@ -28,5 +30,7 @@ resource "azurerm_private_dns_a_record" "browser_authentication" {
   resource_group_name = var.resource_group_name
   ttl                 = 300
   records             = [azurerm_private_endpoint.frontend[0].private_service_connection[0].private_ip_address]
+
+  depends_on = [ azurerm_private_endpoint.frontend[0] , azurerm_private_dns_zone.databricks-frontend[0]]
 }
 
