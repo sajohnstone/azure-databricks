@@ -12,6 +12,6 @@ locals {
   }
 
   configuration = {
-    use_private_link = false
+    use_private_link = true
   }
 }
