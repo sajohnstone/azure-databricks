@@ -4,5 +4,5 @@ output "catalog_name" {
 }
 
 output "storage_account_name" {
-  value = azurerm_storage_account.this.name
+  value = azurerm_storage_account.this[0].name
 }
