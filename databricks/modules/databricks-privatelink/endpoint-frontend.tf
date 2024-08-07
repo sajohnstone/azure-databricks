@@ -8,7 +8,7 @@ resource "azurerm_private_endpoint" "frontend" {
 
   private_service_connection {
     name                           = "${var.name}-frontend"
-    private_connection_resource_id = var.workspace_id
+    private_connection_resource_id = data.azurerm_databricks_workspace.this.id
     is_manual_connection           = false
     subresource_names              = ["databricks_ui_api"]
   }

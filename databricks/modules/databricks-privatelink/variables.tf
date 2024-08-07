@@ -1,6 +1,6 @@
 variable "name" {
   type        = string
-  description = "The name of the Databricks catalog to be created."
+  description = "The name of the Databricks resources to be created."
 }
 
 variable "location" {
@@ -25,9 +25,9 @@ variable "databricks_vnet_name" {
   description = "The VNet id used for PrivateLink."
 }
 
-variable "workspace_id" {
+variable "workspace_name" {
   type        = string
-  description = "The id of the workspace."
+  description = "The name of the workspace."
 }
 
 variable "use_frontend_privatelink" {
@@ -42,7 +42,24 @@ variable "use_backend_privatelink" {
   default     = true
 }
 
+variable "use_adfs_privatelink" {
+  type        = bool
+  description = "Turns on private DNS zone for the dbfs_dfs resource."
+  default     = true
+}
+
 variable "databricks_vnet_rg_name" {
   type        = string
   description = "The name of the resource group where the vnet sits."
+}
+
+variable "storage_account_name" {
+  type        = string
+  description = "The name of the storage account used for Databricks."
+}
+
+variable "tags" {
+  type        = map(string)
+  description = "A map of tags to assign to the resources."
+  default     = {}
 }
