@@ -15,7 +15,7 @@ resource "azurerm_private_endpoint" "frontend" {
 
   private_dns_zone_group {
     name                 = "private-dns-zone-front"
-    private_dns_zone_ids = [azurerm_private_dns_zone.this.id]
+    private_dns_zone_ids = [azurerm_private_dns_zone.this[0].id]
   }
 }
 
