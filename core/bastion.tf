@@ -18,9 +18,9 @@ resource "azurerm_network_interface" "this" {
 
   ip_configuration {
     name                          = "ip-001"
-    private_ip_address            = "10.0.6.10"
+    private_ip_address            = "10.0.7.10"
     private_ip_address_allocation = "Static"
-    subnet_id                     = azurerm_subnet.this["hub-dev-stutest-aue-hub-public"].id
+    subnet_id                     = azurerm_subnet.this["hub-${local.name_prefix}-hub-public"].id
     public_ip_address_id          = azurerm_public_ip.this.id
   }
 }
@@ -55,7 +55,8 @@ resource "azurerm_windows_virtual_machine" "this" {
   }
 }
 
-resource "azurerm_network_security_group" "this" {
+/*
+resource "azurerm_network_security_group" "bastion" {
   name                = local.name_prefix
   location            = azurerm_resource_group.this.location
   resource_group_name = azurerm_resource_group.this.name
@@ -77,3 +78,4 @@ resource "azurerm_network_interface_security_group_association" "this" {
   network_interface_id      = azurerm_network_interface.this.id
   network_security_group_id = azurerm_network_security_group.this.id
 }
+*/

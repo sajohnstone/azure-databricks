@@ -1,6 +1,6 @@
 # Define a private endpoint resource for the backend
 resource "azurerm_private_endpoint" "backend" {
-    count = var.use_backend_privatelink == true ? 1 : 0
+  count = var.use_backend_privatelink == true ? 1 : 0
 
   name                = "${var.name}-backend"
   location            = var.location
@@ -26,7 +26,7 @@ resource "azurerm_private_endpoint" "backend" {
 
 #Define a private DNS zone resource for the backend
 resource "azurerm_private_dns_zone" "backend" {
-    count = var.use_backend_privatelink == true ? 1 : 0
+  count = var.use_backend_privatelink == true ? 1 : 0
 
   name                = "privatelink.azuredatabricks.net"
   resource_group_name = var.resource_group_name
@@ -36,7 +36,7 @@ resource "azurerm_private_dns_zone" "backend" {
 
 # Define a virtual network link for the private DNS zone and the backend virtual network
 resource "azurerm_private_dns_zone_virtual_network_link" "backend" {
-    count = var.use_backend_privatelink == true ? 1 : 0
+  count = var.use_backend_privatelink == true ? 1 : 0
 
   name                  = "databricks-vnetlink-backend"
   resource_group_name   = var.resource_group_name

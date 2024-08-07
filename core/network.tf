@@ -17,7 +17,7 @@ resource "azurerm_subnet" "this" {
 
   // add delegation for the public/private subnets
   dynamic "delegation" {
-    for_each = try(regex("public|private", each.value.snet_key), null) != null ? [1] : []
+    for_each = try(regex("host|container", each.value.snet_key), null) != null ? [1] : []
 
     content {
       name = "delegation-to-databricks"
@@ -33,30 +33,35 @@ resource "azurerm_subnet" "this" {
   }
 }
 
-# an empty NSG to associate to the workspace public/private subnets
-resource "azurerm_network_security_group" "empty" {
-  name                = "nsg-abw-empty"
+resource "azurerm_network_security_group" "this" {
+  for_each = local.subnets
+
+  name                = each.value.snet_key
   location            = azurerm_resource_group.this.location
   resource_group_name = azurerm_resource_group.this.name
 
-  security_rule {
-    name                       = "AllowAnyRDPInbound"
-    priority                   = 100
-    direction                  = "Inbound"
-    access                     = "Allow"
-    protocol                   = "Tcp"
-    source_port_range          = "*"
-    destination_port_range     = "3389"
-    source_address_prefix      = var.your_ip
-    destination_address_prefix = "*"
+  dynamic "security_rule" {
+    for_each = try(regex("public", each.value.snet_key), null) != null ? [1] : []
+
+    content {
+      name                       = "AllowAnyRDPInbound"
+      priority                   = 100
+      direction                  = "Inbound"
+      access                     = "Allow"
+      protocol                   = "Tcp"
+      source_port_range          = "*"
+      destination_port_range     = "3389"
+      source_address_prefix      = var.your_ip
+      destination_address_prefix = "*"
+    }
   }
 }
 
 resource "azurerm_subnet_network_security_group_association" "abw-subnets" {
-  for_each = { for key, value in local.subnets : key => value if try(regex("public|private", value.snet_key), null) != null }
+  for_each = local.subnets
 
   subnet_id                 = azurerm_subnet.this[each.value.full_key].id
-  network_security_group_id = azurerm_network_security_group.empty.id
+  network_security_group_id = azurerm_network_security_group.this[each.value.full_key].id
 }
 
 module "vnet_peering" {

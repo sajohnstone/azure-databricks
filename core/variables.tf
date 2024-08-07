@@ -27,3 +27,11 @@ variable "your_ip" {
   type        = string
   description = "Your IP use * if not sure"
 }
+
+
+variable "tags" {
+  type        = map(string)
+  description = "A map of tags to assign to the resources."
+  default     = {}
+}
+

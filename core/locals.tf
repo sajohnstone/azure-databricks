@@ -13,12 +13,20 @@ locals {
         vnet_address_space = ["10.0.4.0/22"]
         subnets = [
           {
-            name           = "${local.name_prefix}-hub-private"
-            address_prefix = ["10.0.4.0/23"]
+            name           = "${local.name_prefix}-hub-host"
+            address_prefix = ["10.0.4.0/24"]
+          },
+          {
+            name           = "${local.name_prefix}-hub-container"
+            address_prefix = ["10.0.5.0/24"]
+          },
+          {
+            name           = "${local.name_prefix}-hub-privatelink"
+            address_prefix = ["10.0.6.0/24"]
           },
           {
             name           = "${local.name_prefix}-hub-public"
-            address_prefix = ["10.0.6.0/23"]
+            address_prefix = ["10.0.7.0/24"]
           }
         ]
       }
@@ -39,11 +47,11 @@ locals {
         vnet_address_space = ["10.0.0.0/22"]
         subnets = [
           {
-            name           = "${local.name_prefix}-prod-private"
+            name           = "${local.name_prefix}-prod-host"
             address_prefix = ["10.0.0.0/24"]
           },
           {
-            name           = "${local.name_prefix}-prod-public"
+            name           = "${local.name_prefix}-prod-container"
             address_prefix = ["10.0.1.0/24"]
           },
           {

@@ -20,6 +20,8 @@ module "privatelink" {
   storage_account_name          = module.sandbox_new.storage_account_name
 
   depends_on = [
-    data.azurerm_virtual_network.this
+    data.azurerm_virtual_network.this,
+    module.module.sandbox,
+    module.module.sandbox_new
   ]
 }
