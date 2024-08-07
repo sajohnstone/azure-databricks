@@ -4,5 +4,5 @@ output "catalog_name" {
 }
 
 output "storage_account_name" {
-  value = azurerm_storage_account.this[0].name
+  value = var.use_storage_account == true ? azurerm_storage_account.this[0].name : ""
 }
