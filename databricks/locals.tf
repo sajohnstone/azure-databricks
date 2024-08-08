@@ -12,6 +12,6 @@ locals {
   }
 
   configuration = {
-    use_private_link = true
+    use_private_link = false ## Must be created with false can be enabled once provisioned
   }
 }

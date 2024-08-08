@@ -12,8 +12,7 @@ module "sandbox" {
   use_storage_account = false
 
   depends_on = [
-    databricks_metastore_assignment.this,
-    module.privatelink
+    databricks_metastore_assignment.this
   ]
 }
 
@@ -34,7 +33,6 @@ module "sandbox_new" {
   container_name       = "data"
 
   depends_on = [
-    databricks_metastore_assignment.this,
-    module.privatelink
+    databricks_metastore_assignment.this
   ]
 }
