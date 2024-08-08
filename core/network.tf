@@ -41,18 +41,18 @@ resource "azurerm_network_security_group" "this" {
   resource_group_name = azurerm_resource_group.this.name
 
   dynamic "security_rule" {
-    for_each = try(regex("public", each.value.snet_key), null) != null ? [1] : []
+    for_each = lookup(local.network.nsg_rules, each.value.snet_key, [])
 
     content {
-      name                       = "AllowAnyRDPInbound"
-      priority                   = 100
-      direction                  = "Inbound"
-      access                     = "Allow"
-      protocol                   = "Tcp"
-      source_port_range          = "*"
-      destination_port_range     = "3389"
-      source_address_prefix      = var.your_ip
-      destination_address_prefix = "*"
+      name                       = security_rule.value.name
+      priority                   = security_rule.value.priority
+      direction                  = security_rule.value.direction
+      access                     = security_rule.value.access
+      protocol                   = security_rule.value.protocol
+      source_port_range          = security_rule.value.source_port_range
+      destination_port_range     = security_rule.value.destination_port_range
+      source_address_prefix      = security_rule.value.source_address_prefix
+      destination_address_prefix = security_rule.value.destination_address_prefix
     }
   }
 }
@@ -77,9 +77,9 @@ module "vnet_peering" {
   vnet_src_id  = azurerm_virtual_network.this[each.value.src-vnet-key].id
   vnet_dest_id = azurerm_virtual_network.this["hub"].id
 
-  allow_forwarded_src_traffic  = false
-  allow_forwarded_dest_traffic = false
+  allow_forwarded_src_traffic  = true
+  allow_forwarded_dest_traffic = true
 
-  allow_virtual_src_network_access  = false
-  allow_virtual_dest_network_access = false
+  allow_virtual_src_network_access  = true
+  allow_virtual_dest_network_access = true
 }

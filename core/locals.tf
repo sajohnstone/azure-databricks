@@ -8,6 +8,73 @@ locals {
   }
 
   network = {
+    nsg_rules = {
+      "${local.name_prefix}-prod-privatelink" = [
+        {
+          access                     = "Allow"
+          description                = ""
+          destination_address_prefix = "*"
+          destination_port_range     = "3306"
+          direction                  = "Inbound"
+          name                       = "AllowAnyCustom3306Inbound"
+          priority                   = 1021
+          protocol                   = "*"
+          source_address_prefix      = "*"
+          source_port_range          = "*"
+        },
+        {
+          access                     = "Allow"
+          description                = ""
+          destination_address_prefix = "*"
+          destination_port_range     = "443"
+          direction                  = "Inbound"
+          name                       = "Allow443"
+          priority                   = 1001
+          protocol                   = "*"
+          source_address_prefix      = "*"
+          source_port_range          = "*"
+        },
+        {
+          access                     = "Allow"
+          description                = ""
+          destination_address_prefix = "*"
+          destination_port_range     = "6666"
+          direction                  = "Inbound"
+          name                       = "AllowAnyCustom6666Inbound"
+          priority                   = 1011
+          protocol                   = "*"
+          source_address_prefix      = "*"
+          source_port_range          = "*"
+        },
+        {
+          access                     = "Allow"
+          description                = ""
+          destination_address_prefix = "*"
+          destination_port_range     = "8443-8451"
+          direction                  = "Inbound"
+          name                       = "AllowAnyCustom8443-8451Inbound"
+          priority                   = 1031
+          protocol                   = "*"
+          source_address_prefix      = "*"
+          source_port_range          = "*"
+        },
+      ]
+      "${local.name_prefix}-hub-public" = [
+        {
+
+          access                     = "Allow"
+          description                = ""
+          destination_address_prefix = "*"
+          destination_port_range     = "3389"
+          direction                  = "Inbound"
+          name                       = "AllowAnyRDPInbound"
+          priority                   = 100
+          protocol                   = "Tcp"
+          source_address_prefix      = var.your_ip
+          source_port_range          = "*"
+        }
+      ]
+    }
     vnets = {
       "hub" = {
         vnet_address_space = ["10.0.4.0/22"]
