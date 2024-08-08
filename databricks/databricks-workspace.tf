@@ -4,11 +4,11 @@ resource "azurerm_databricks_workspace" "this" {
   location            = azurerm_resource_group.this.location
   sku                 = var.databricks_sku
 
-  #public_network_access_enabled         = !local.configuration.use_private_link
-  #network_security_group_rules_required = local.configuration.use_private_link ? "NoAzureDatabricksRules" : "AllRules"
+  public_network_access_enabled         = !local.configuration.use_private_link
+  network_security_group_rules_required = local.configuration.use_private_link ? "NoAzureDatabricksRules" : "AllRules"
 
   custom_parameters {
-    #no_public_ip                                         = local.configuration.use_private_link
+    no_public_ip                                         = local.configuration.use_private_link
     virtual_network_id                                   = data.azurerm_virtual_network.this.id
     public_subnet_name                                   = data.azurerm_subnet.public.name
     private_subnet_name                                  = data.azurerm_subnet.private.name
