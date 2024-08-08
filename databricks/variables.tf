@@ -80,7 +80,7 @@ variable "hub_privatelink_subnet" {
   default     = null
 }
 
-variable "hub_privatelink_subnet" {
+variable "hub_vnet_name" {
   description = "The the ID of the Vnet in the hub network."
   type        = string
   default     = null
