@@ -22,7 +22,7 @@ module "privatelink" {
   depends_on = [
     data.azurerm_virtual_network.this,
     azurerm_databricks_workspace.this,
-    module.module.sandbox,
-    module.module.sandbox_new
+    module.sandbox,
+    module.sandbox_new
   ]
 }
