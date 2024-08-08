@@ -41,7 +41,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "backend" {
   count = var.use_backend_privatelink == true ? 1 : 0
 
   name                  = "databricks-vnetlink-backend"
-  resource_group_name   = var.resource_group_name
+  resource_group_name   = var.databricks_vnet_rg_name
   private_dns_zone_name = "privatelink.azuredatabricks.net"
   virtual_network_id    = data.azurerm_virtual_network.this.id
 
