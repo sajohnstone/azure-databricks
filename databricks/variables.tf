@@ -79,3 +79,10 @@ variable "hub_privatelink_subnet" {
   type        = string
   default     = null
 }
+
+variable "hub_privatelink_subnet" {
+  description = "The the ID of the Vnet in the hub network."
+  type        = string
+  default     = null
+}
+
