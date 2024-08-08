@@ -74,7 +74,7 @@ variable "private_subnet_nsg_id" {
   default     = null
 }
 
-variable "hub_privatelink_subnet_name" {
+variable "hub_privatelink_subnet" {
   description = "The the ID of the subnet in the hub network."
   type        = string
   default     = null

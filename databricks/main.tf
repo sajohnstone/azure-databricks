@@ -18,8 +18,8 @@ module "privatelink" {
   use_backend_privatelink       = true
   use_adfs_privatelink          = false
   storage_account_name          = module.sandbox_new.storage_account_name
-    hub_dns_zone_id = data.azurerm_private_dns_zone.auth_front.id
-    hub_subnet_id   = data.azurerm_subnet.hub_privatelink_subnet_name.id  
+  hub_dns_zone_id               = data.azurerm_private_dns_zone.auth_front.id
+  hub_subnet_id                 = data.azurerm_subnet.hub_privatelink_subnet.id
 
   depends_on = [
     data.azurerm_virtual_network.this,

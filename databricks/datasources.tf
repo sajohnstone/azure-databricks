@@ -39,7 +39,7 @@ data "azurerm_private_dns_zone" "auth_front" {
   resource_group_name = var.databricks_vnet_rg_name
 }
 
-data "azurerm_subnet" "hub_privatelink_subnet_name" {
+data "azurerm_subnet" "hub_privatelink_subnet" {
   name                 = var.hub_privatelink_subnet
   virtual_network_name = var.databricks_vnet_name
   resource_group_name  = var.databricks_vnet_rg_name
