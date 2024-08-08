@@ -39,5 +39,15 @@ resource "databricks_job" "catalog_migration" {
       notebook_path = databricks_notebook.run_tests.path
     }
   }
+
+  task {
+    task_key = "cleanup"
+    depends_on {
+      task_key = "run-tests"
+    }
+    notebook_task {
+      notebook_path = databricks_notebook.cleanup.path
+    }
+  }  
   depends_on = [databricks_cluster.this]
 }

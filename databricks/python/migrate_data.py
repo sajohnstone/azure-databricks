@@ -5,8 +5,8 @@
 dbutils.library.restartPython()
 
 # Get parameters
-dbutils.widgets.text("source_catalog", "dev_stutest_sandbox")
-dbutils.widgets.text("target_catalog", "dev_stutest_sandbox_new")
+dbutils.widgets.text("source_catalog", "dev_databricksstu_sandbox")
+dbutils.widgets.text("target_catalog", "dev_databricksstu_sandbox_new")
 source_catalog = dbutils.widgets.get("source_catalog")
 target_catalog = dbutils.widgets.get("target_catalog")
 

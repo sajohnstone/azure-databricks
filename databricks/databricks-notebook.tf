@@ -21,3 +21,12 @@ resource "databricks_notebook" "migrate_data" {
   path           = "/code/migrate_data"
   language       = "PYTHON"
 }
+
+resource "databricks_notebook" "cleanup" {
+  provider = databricks.workspace
+
+  content_base64 = base64encode(file("./python/cleanup.py"))
+  path           = "/code/cleanup"
+  language       = "PYTHON"
+}
+
