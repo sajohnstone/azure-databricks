@@ -17,7 +17,7 @@ module "privatelink" {
   use_frontend_privatelink      = true
   use_backend_privatelink       = true
   use_adfs_privatelink          = false
-  storage_account_name          = module.sandbox_new.storage_account_name
+  storage_account_name          = "${local.name_prefix_short}sa"
   hub_dns_zone_id               = data.azurerm_private_dns_zone.auth_front.id
   hub_subnet_id                 = data.azurerm_subnet.hub_privatelink_subnet.id
   hub_vnet_name                 = "dev-stutest-aue-hub-vnet"  ##TMP
@@ -25,7 +25,5 @@ module "privatelink" {
   depends_on = [
     data.azurerm_virtual_network.this,
     azurerm_databricks_workspace.this,
-    module.sandbox,
-    module.sandbox_new
   ]
 }
