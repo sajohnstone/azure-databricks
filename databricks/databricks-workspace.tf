@@ -19,8 +19,7 @@ resource "azurerm_databricks_workspace" "this" {
   depends_on = [
     data.azurerm_subnet.public,
     data.azurerm_subnet.private,
-    data.azurerm_virtual_network.this,
-    module.privatelink
+    data.azurerm_virtual_network.this
   ]
 }
 
