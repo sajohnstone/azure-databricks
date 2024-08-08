@@ -18,13 +18,14 @@ resource "azurerm_private_endpoint" "backend" {
   # Configure the private DNS zone group
   private_dns_zone_group {
     name                 = "private-dns-zone-backend"
-    private_dns_zone_ids = [azurerm_private_dns_zone.backend[0].id]
+    private_dns_zone_ids = [var.hub_dns_zone_id]
   }
 
   tags = var.tags
 }
 
 #Define a private DNS zone resource for the backend
+/*
 resource "azurerm_private_dns_zone" "backend" {
   count = var.use_backend_privatelink == true ? 1 : 0
 
@@ -33,6 +34,7 @@ resource "azurerm_private_dns_zone" "backend" {
 
   tags = var.tags
 }
+*/
 
 # Define a virtual network link for the private DNS zone and the backend virtual network
 resource "azurerm_private_dns_zone_virtual_network_link" "backend" {
@@ -40,20 +42,8 @@ resource "azurerm_private_dns_zone_virtual_network_link" "backend" {
 
   name                  = "databricks-vnetlink-backend"
   resource_group_name   = var.resource_group_name
-  private_dns_zone_name = azurerm_private_dns_zone.backend[0].name
+  private_dns_zone_name = "privatelink.azuredatabricks.net"
   virtual_network_id    = data.azurerm_virtual_network.this.id
-
-  tags = var.tags
-}
-
-# This shouldn't be needed but is
-resource "azurerm_private_dns_zone_virtual_network_link" "backend2" {
-  count = var.use_backend_privatelink == true ? 1 : 0
-
-  name                  = "databricks-vnetlink-backend-hub"
-  resource_group_name   = var.resource_group_name
-  private_dns_zone_name = azurerm_private_dns_zone.backend[0].name
-  virtual_network_id    = data.azurerm_virtual_network.hub.id
 
   tags = var.tags
 }
