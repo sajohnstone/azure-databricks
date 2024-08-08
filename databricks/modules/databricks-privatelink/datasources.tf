@@ -9,6 +9,11 @@ data "azurerm_virtual_network" "this" {
   resource_group_name = var.databricks_vnet_rg_name
 }
 
+data "azurerm_virtual_network" "hub" {
+  name                = var.hub_vnet_name
+  resource_group_name = var.databricks_vnet_rg_name
+}
+
 data "azurerm_databricks_workspace" "this" {
   name                = var.workspace_name
   resource_group_name = var.resource_group_name

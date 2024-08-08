@@ -72,5 +72,6 @@ variable "hub_dns_zone_id" {
   type        = string
 }
 
-
-
+variable "hub_vnet_name" {
+  type        = string
+}

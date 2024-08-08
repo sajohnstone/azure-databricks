@@ -20,6 +20,7 @@ module "privatelink" {
   storage_account_name          = module.sandbox_new.storage_account_name
   hub_dns_zone_id               = data.azurerm_private_dns_zone.auth_front.id
   hub_subnet_id                 = data.azurerm_subnet.hub_privatelink_subnet.id
+  hub_vnet_name                 = "dev-stutest-aue-hub-vnet"  ##TMP
 
   depends_on = [
     data.azurerm_virtual_network.this,
