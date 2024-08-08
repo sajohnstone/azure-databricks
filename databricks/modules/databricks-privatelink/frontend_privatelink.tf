@@ -2,7 +2,7 @@ resource "azurerm_private_endpoint" "frontend" {
   name                = "${var.name}-frontend"
   location            = var.location
   resource_group_name = var.databricks_vnet_rg_name
-  subnet_id           = var.hub_private_link_info.subnet_id
+  subnet_id           = var.hub_subnet_id
 
   private_service_connection {
     name                           = "ple-${var.name}-front"
@@ -13,6 +13,6 @@ resource "azurerm_private_endpoint" "frontend" {
 
   private_dns_zone_group {
     name                 = "private-dns-zone-front"
-    private_dns_zone_ids = [var.hub_private_link_info.dns_zone_id]
+    private_dns_zone_ids = [var.hub_dns_zone_id]
   }
 }

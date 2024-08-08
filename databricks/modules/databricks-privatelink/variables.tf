@@ -63,3 +63,14 @@ variable "tags" {
   description = "A map of tags to assign to the resources."
   default     = {}
 }
+
+variable "hub_subnet_id" {
+  type        = string
+}
+
+variable "hub_dns_zone_id" {
+  type        = string
+}
+
+
+
