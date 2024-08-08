@@ -1,6 +1,7 @@
 # Terraform Azure Databricks Environment
 
 This project provides Terraform configurations to deploy an example Databricks environment to Azure. It uses Docker containers to manage tooling such as Terraform itself. The project also includes a Makefile to streamline common operations.
+Note: Since creating this repo I've found this repo (https://github.com/databricks/terraform-databricks-sra) which is an excellent resource. 
 
 ## Project Structure
 

@@ -51,7 +51,6 @@ check-security: prep ## Static analysis of your terraform templates to spot pote
 documentation: prep ## Generate README.md 
 	@docker-compose run --rm build terraform-docs markdown table --output-file README.md --output-mode inject . 
 
-
 plan: prep ## Show deployment plan
 	@docker-compose run --rm build terraform plan -var-file="$(VARS)" 
 
