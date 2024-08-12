@@ -1,6 +1,6 @@
 # Get parameters
 dbutils.widgets.text("catalog_name", "")
-source_catalog = dbutils.widgets.get("catalog_name")
+catalog_name = dbutils.widgets.get("catalog_name")
 
 # Create catalog
 def create_catalog(catalog_name):
