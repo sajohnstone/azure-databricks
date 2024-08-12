@@ -8,6 +8,7 @@ resource "databricks_catalog" "this" {
   comment      = var.comment
   owner        = var.owner
   storage_root = var.use_storage_account == true ? "abfss://${azurerm_storage_container.this[0].name}@${azurerm_storage_account.this[0].name}.dfs.core.windows.net/" : null
+  force_destroy = true
 
   depends_on = [
     azurerm_storage_account.this[0],
