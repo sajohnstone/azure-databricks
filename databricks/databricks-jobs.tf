@@ -73,7 +73,7 @@ resource "databricks_job" "catalog_migration_temp_to_new_catalog" {
       notebook_path = databricks_notebook.migrate_data.path
       base_parameters = {
         source_catalog = "dev_databricksstu_tmp"
-        target_catalog = module.sandbox.catalog_name
+        target_catalog = "${var.environment}_${var.project}_sandbox"
       }
     }
   }
@@ -88,7 +88,7 @@ resource "databricks_job" "catalog_migration_temp_to_new_catalog" {
       notebook_path = databricks_notebook.run_tests.path
       base_parameters = {
         source_catalog = "dev_databricksstu_tmp"
-        target_catalog = module.sandbox.catalog_name 
+        target_catalog = "${var.environment}_${var.project}_sandbox"
       }
     }
   }
