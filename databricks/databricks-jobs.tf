@@ -97,7 +97,7 @@ resource "databricks_job" "catalog_migration_temp_to_new_catalog" {
   task {
     task_key = "drop-source-catalog"
     depends_on {
-      task_key = "test-data-to-tmp"
+      task_key = "test-tmp-to-data"
     }
     notebook_task {
       notebook_path = databricks_notebook.drop_catalog.path
