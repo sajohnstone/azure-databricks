@@ -22,18 +22,18 @@ resource "databricks_notebook" "migrate_data" {
   language       = "PYTHON"
 }
 
-resource "databricks_notebook" "cleanup" {
-  provider = databricks.workspace
-
-  content_base64 = base64encode(file("./python/cleanup.py"))
-  path           = "/code/cleanup"
-  language       = "PYTHON"
-}
-
 resource "databricks_notebook" "create_catalog" {
   provider = databricks.workspace
 
   content_base64 = base64encode(file("./python/create_catalog.py"))
   path           = "/code/create_catalog"
+  language       = "PYTHON"
+}
+
+resource "databricks_notebook" "drop_catalog" {
+  provider = databricks.workspace
+
+  content_base64 = base64encode(file("./python/drop_catalog.py"))
+  path           = "/code/drop_catalog"
   language       = "PYTHON"
 }
