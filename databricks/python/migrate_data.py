@@ -14,34 +14,44 @@ target_catalog = dbutils.widgets.get("target_catalog")
 from discoverx import DX
 dx = DX()
 
-# Catalog should already exist but if not create
-#spark.sql(f"CREATE CATALOG IF NOT EXISTS {destination_catalog}")
+# Function to clone tables from a source catalog to a destination catalog
+def clone_tables_to_catalog(source_catalog, destination_catalog):
+    def clone_tables(table_info):
+        spark.sql(f"CREATE SCHEMA IF NOT EXISTS {destination_catalog}.{table_info.schema}")
+        try:
+            spark.sql(
+                f"""CREATE OR REPLACE TABLE 
+        {destination_catalog}.{table_info.schema}.{table_info.table} 
+        DEEP CLONE {table_info.catalog}.{table_info.schema}.{table_info.table}
+        """
+            )
+            result = {
+                "source": f"{table_info.catalog}.{table_info.schema}.{table_info.table}",
+                "destination": f"{destination_catalog}.{table_info.schema}.{table_info.table}",
+                "success": True,
+                "info": None,
+            }
+        # Cloning Views is not supported
+        except Exception as error:
+            result = {
+                "source": f"{table_info.catalog}.{table_info.schema}.{table_info.table}",
+                "destination": f"{destination_catalog}.{table_info.schema}.{table_info.table}",
+                "success": False,
+                "info": error,
+            }
+        return result
+    
+    # Process the tables from the source catalog
+    return dx.from_tables(f"{source_catalog}.*.*").map(clone_tables)
 
-# Use DEEP clone to recreate the table
-def clone_tables(table_info):
-    spark.sql(f"CREATE SCHEMA IF NOT EXISTS {target_catalog}.{table_info.schema}")
-    try:
-        spark.sql(
-            f"""CREATE OR REPLACE TABLE 
-    {target_catalog}.{table_info.schema}.{table_info.table} 
-    DEEP CLONE {table_info.catalog}.{table_info.schema}.{table_info.table}
-    """
-        )
-        result = {
-            "source": f"{table_info.catalog}.{table_info.schema}.{table_info.table}",
-            "destination": f"{target_catalog}.{table_info.schema}.{table_info.table}",
-            "success": True,
-            "info": None,
-        }
-    # Cloning Views is not supported
-    except Exception as error:
-        result = {
-            "source": f"{table_info.catalog}.{table_info.schema}.{table_info.table}",
-            "destination": f"{target_catalog}.{table_info.schema}.{table_info.table}",
-            "success": False,
-            "info": error,
-        }
-    return result
+# Call the function with the source and target catalogs
+res = clone_tables_to_catalog(source_catalog, target_catalog)
 
-# Process the tables
-res = dx.from_tables(f"{source_catalog}.*.*").map(clone_tables)
+# Print out the result
+for result in res:
+    print(f"Source: {result['source']}")
+    print(f"Destination: {result['destination']}")
+    print(f"Success: {result['success']}")
+    if result['info']:
+        print(f"Info: {result['info']}")
+    print("-" * 50)

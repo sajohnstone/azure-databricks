@@ -1,3 +1,7 @@
+/*
+  *** Once the catalog-migration-to-tem job has been run remove the sandbox to remove the catalog and uncomment the new catalog
+*/
+
 module "sandbox" {
   source = "./modules/databricks-catalog"
   providers = {
@@ -16,6 +20,7 @@ module "sandbox" {
   ]
 }
 
+/*
 module "sandbox_new" {
   source = "./modules/databricks-catalog"
   providers = {
@@ -23,7 +28,7 @@ module "sandbox_new" {
     databricks.account   = databricks.account
   }
 
-  name                = "${var.environment}_${var.project}_sandbox_new"
+  name                = "${var.environment}_${var.project}_sandbox"
   resource_group_name = azurerm_resource_group.this.name
   location            = azurerm_resource_group.this.location
   metastore_id        = var.metastore_id
@@ -36,3 +41,4 @@ module "sandbox_new" {
     databricks_metastore_assignment.this
   ]
 }
+*/
