@@ -63,7 +63,7 @@ resource "databricks_job" "catalog_migration_to_temp" {
 resource "databricks_job" "catalog_migration_temp_to_new_catalog" {
   provider = databricks.workspace
 
-  name                = "catalog-migration-to-temp"
+  name                = "catalog-temp-to-new-catlog"
   existing_cluster_id = databricks_cluster.this.id
 
   #migrate-tmp-to-data
