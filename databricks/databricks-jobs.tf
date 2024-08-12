@@ -58,20 +58,6 @@ resource "databricks_job" "catalog_migration_to_temp" {
       }
     }
   }
-
-  #drop-source-catalog (NOTE will need to remove this in TF after this is applied)
-  task {
-    task_key = "drop-source-catalog"
-    depends_on {
-      task_key = "test-data-to-tmp"
-    }
-    notebook_task {
-      notebook_path = databricks_notebook.drop_catalog.path
-      base_parameters = {
-        catalog_name = module.sandbox.catalog_name
-      }
-    }
-  }
 }
 
 resource "databricks_job" "catalog_migration_temp_to_new_catalog" {
