@@ -20,7 +20,6 @@ module "sandbox" {
   ]
 }
 
-/*
 module "sandbox_new" {
   source = "./modules/databricks-catalog"
   providers = {
@@ -28,12 +27,12 @@ module "sandbox_new" {
     databricks.account   = databricks.account
   }
 
-  name                = "${var.environment}_${var.project}_sandbox"
-  resource_group_name = azurerm_resource_group.this.name
-  location            = azurerm_resource_group.this.location
-  metastore_id        = var.metastore_id
-  use_storage_account = true
-
+  name                 = "${var.environment}_${var.project}_sandbox"
+  resource_group_name  = azurerm_resource_group.this.name
+  location             = azurerm_resource_group.this.location
+  metastore_id         = var.metastore_id
+  use_storage_account  = true
+  create_catalog       = false ## CHANGE THIS TO TRUE TO CREATE THE NEW CATALOG
   storage_account_name = "${local.name_prefix_short}sa"
   container_name       = "data"
 
@@ -41,4 +40,3 @@ module "sandbox_new" {
     databricks_metastore_assignment.this
   ]
 }
-*/

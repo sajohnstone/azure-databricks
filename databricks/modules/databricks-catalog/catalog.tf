@@ -1,4 +1,6 @@
 resource "databricks_catalog" "this" {
+  count = var.create_catalog == true ? 1 : 0
+
   provider = databricks.workspace
 
   metastore_id = var.metastore_id

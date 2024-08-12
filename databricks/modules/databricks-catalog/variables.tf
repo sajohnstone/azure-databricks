@@ -62,3 +62,9 @@ variable "account_replication_type" {
   description = "The replication type for the Azure Storage Account. Possible values are 'LRS' (Locally-redundant storage), 'GRS' (Geo-redundant storage), etc."
   default     = "LRS"
 }
+
+variable "create_catalog" {
+  type    = bool
+  default = true
+}
+
