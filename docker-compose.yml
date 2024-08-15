@@ -1,0 +1,12 @@
+services:
+  build:
+    build: .
+    platform: linux/amd64 #for Macbook M1/2
+    entrypoint: []
+    volumes:
+      - .:/work
+      - ~/.ssh:/root/.ssh
+      - ~/.aws:/root/.aws
+      - ~/.azure:/root/.azure
+      - ~/.databrickscfg:/root/.databrickscfg
+    tty: true  

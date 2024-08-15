@@ -36,11 +36,8 @@ prep: set-env
 format: prep ## Rewrites all Terraform configuration files to a canonical format.
 	@docker-compose run --rm build terraform fmt -write=true -recursive
 
-# https://github.com/terraform-linters/tflint
 lint: prep ## Check for possible errors best practices
 	@docker-compose run --rm build tflint
-
-# https://github.com/liamg/tfsec
 
 shell: ## Grants shell access to the Docker image for debugging
 	@docker-compose run --rm build /bin/bash
@@ -50,7 +47,6 @@ check-security: prep ## Static analysis of your terraform templates to spot pote
 
 documentation: prep ## Generate README.md 
 	@docker-compose run --rm build terraform-docs markdown table --output-file README.md --output-mode inject . 
-
 
 plan: prep ## Show deployment plan
 	@docker-compose run --rm build terraform plan -var-file="$(VARS)" 
