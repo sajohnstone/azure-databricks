@@ -1,3 +1,17 @@
+locals {
+  all_logs = [
+    "RemoteHistoryService", "accounts", "clusters", "databrickssql",
+    "deltaPipelines", "featureStore", "genie", "globalInitScripts",
+    "iamRole", "instancePools", "jobs", "mlflowAcledArtifact",
+    "mlflowExperiment", "modelRegistry", "notebook", "repos",
+    "secrets", "sqlPermissions", "sqlanalytics", "ssh", "dbfs",
+    "unityCatalog", "workspace", "gitCredentials", "webTerminal",
+  ]
+  ms_logs = []
+}
+
+
+
 resource "azurerm_databricks_workspace" "this" {
   name                = var.name
   resource_group_name = var.resource_group_name
@@ -37,22 +51,10 @@ resource "azurerm_monitor_diagnostic_setting" "this" {
   target_resource_id         = azurerm_databricks_workspace.this.id
   log_analytics_workspace_id = var.log_analytics_workspace_id
 
-  enabled_log {
-    category = "jobs"
-  }
-  enabled_log {
-    category = "clusters"
-  }
-  enabled_log {
-    category = "accounts"
-  }
-  enabled_log {
-    category = "dbfs"
-  }
- // enabled_log {
- //   category = "notebooks"
- // }
-  enabled_log {
-    category = "workspace"
+  dynamic "enabled_log" {
+    for_each = toset(concat(local.all_logs, local.ms_logs))
+    content {
+      category = enabled_log.value
+    }
   }
 }
