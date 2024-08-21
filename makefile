@@ -54,5 +54,8 @@ plan: prep ## Show deployment plan
 apply: prep ## Deploy resources
 	@docker-compose run --rm build terraform apply -var-file="$(VARS)"
 
+auto-apply: prep ## Deploy resources
+	@docker-compose run --rm build terraform apply -auto-approve -var-file="$(VARS)"
+
 destroy: prep ## Destroy resources
 	@docker-compose run --rm build terraform destroy -var-file="$(VARS)"

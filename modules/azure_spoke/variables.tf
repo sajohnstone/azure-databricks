@@ -121,3 +121,29 @@ variable "storage_account_name" {
   type        = string
   default     = null
 }
+
+variable "warehouse_sizes" {
+  description = "Map of warehouse sizes and their configurations."
+  type = map(object({
+    cluster_size     = string
+    max_num_clusters = number
+    enable_photon    = bool
+  }))
+  default = {
+    small = {
+      cluster_size     = "2X-Small"
+      max_num_clusters = 1
+      enable_photon    = false
+    }
+    medium = {
+      cluster_size     = "Small"
+      max_num_clusters = 1
+      enable_photon    = false
+    }
+    large = {
+      cluster_size     = "Small"
+      max_num_clusters = 3
+      enable_photon    = true
+    }
+  }
+}
