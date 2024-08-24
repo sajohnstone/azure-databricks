@@ -9,7 +9,7 @@ module "hub" {
   name                         = local.name
   location                     = azurerm_resource_group.hub.location
   resource_group_name          = azurerm_resource_group.hub.name
-  azure_subscription_id        = var.azure_subscription_id
+  azure_subscription_id        = local.workspace.databricks.azure_subscription_id
   tags                         = local.workspace.tags
   vnets                        = local.workspace.network.vnets
   peerings                     = local.workspace.network.peerings
@@ -37,7 +37,7 @@ module "spoke" {
 
   metastore_id               = var.metastore_id
   databricks_account_id      = var.databricks_account_id
-  azure_subscription_id      = var.azure_subscription_id
+  azure_subscription_id      = local.workspace.databricks.azure_subscription_id
   boolean_adb_private_link   = false
   boolean_adfs_privatelink   = false
   storage_account_name       = ""

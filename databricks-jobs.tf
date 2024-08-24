@@ -2,7 +2,7 @@ resource "databricks_job" "catalog_migration_to_temp" {
   provider = databricks.workspace
 
   name                = "catalog-migration-to-temp"
-  existing_cluster_id = databricks_cluster.this.id
+  existing_cluster_id = module.spoke.small_job_cluster_id
 
   #create-sample-data
   task {
@@ -18,6 +18,8 @@ resource "databricks_job" "catalog_migration_to_temp" {
   #create-tmp-catalog
   task {
     task_key = "create-tmp-catalog"
+    existing_cluster_id = module.spoke.small_job_cluster_id
+
     depends_on {
       task_key = "create-sample-data"
     }
@@ -32,6 +34,7 @@ resource "databricks_job" "catalog_migration_to_temp" {
   #migrate-data-to-tmp
   task {
     task_key = "migrate-data-to-tmp"
+    existing_cluster_id = module.spoke.small_job_cluster_id
     depends_on {
       task_key = "create-tmp-catalog"
     }
@@ -47,6 +50,7 @@ resource "databricks_job" "catalog_migration_to_temp" {
   #test-data-to-tmp
   task {
     task_key = "test-data-to-tmp"
+    existing_cluster_id = module.spoke.small_job_cluster_id
     depends_on {
       task_key = "migrate-data-to-tmp"
     }
@@ -64,11 +68,12 @@ resource "databricks_job" "catalog_migration_temp_to_new_catalog" {
   provider = databricks.workspace
 
   name                = "catalog-temp-to-new-catlog"
-  existing_cluster_id = databricks_cluster.this.id
+  existing_cluster_id = module.spoke.small_job_cluster_id
 
   #migrate-tmp-to-data
   task {
     task_key = "migrate-tmp-to-data"
+    existing_cluster_id = module.spoke.small_job_cluster_id
     notebook_task {
       notebook_path = databricks_notebook.migrate_data.path
       base_parameters = {
@@ -81,6 +86,7 @@ resource "databricks_job" "catalog_migration_temp_to_new_catalog" {
   #test-data-to-tmp
   task {
     task_key = "test-tmp-to-data"
+    existing_cluster_id = module.spoke.small_job_cluster_id
     depends_on {
       task_key = "migrate-tmp-to-data"
     }
@@ -96,6 +102,7 @@ resource "databricks_job" "catalog_migration_temp_to_new_catalog" {
   #drop-source-catalog (NOTE will need to remove this in TF after this is applied)
   task {
     task_key = "drop-source-catalog"
+    existing_cluster_id = module.spoke.small_job_cluster_id
     depends_on {
       task_key = "test-tmp-to-data"
     }

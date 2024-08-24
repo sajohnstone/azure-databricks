@@ -122,7 +122,7 @@ variable "storage_account_name" {
   default     = null
 }
 
-variable "warehouse_sizes" {
+variable "sql_warehouse_sizes" {
   description = "Map of warehouse sizes and their configurations."
   type = map(object({
     cluster_size     = string
@@ -140,10 +140,23 @@ variable "warehouse_sizes" {
       max_num_clusters = 1
       enable_photon    = false
     }
-    large = {
-      cluster_size     = "Small"
-      max_num_clusters = 3
-      enable_photon    = true
+  }
+}
+
+variable "cluster_sizes" {
+  description = "Map of both GP and Job clusters and their configurations."
+  type = map(object({
+    node_type_id     = string
+    max_num_clusters = number
+  }))
+  default = {
+    small = {
+      node_type_id     = "Standard_DS3_v2"
+      max_num_clusters = 1
+    }
+    medium = {
+      node_type_id     = "Standard_DS3_v2"
+      max_num_clusters = 2
     }
   }
 }

@@ -6,7 +6,7 @@ provider "azurerm" {
 # Define the Databricks Workspace provider
 provider "databricks" {
   alias                       = "workspace"
-  azure_workspace_resource_id = module.spoke.workspace_id
+  azure_workspace_resource_id = module.spoke.id
 }
 
 # Define the Databricks Account provider

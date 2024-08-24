@@ -14,7 +14,12 @@ locals {
         environment = "test"
       }
       databricks = {
-        sku = "premium"
+        sku                   = "premium"
+        databricks_account_id = var.databricks_account_id
+        client_id             = var.client_id
+        tenant_id             = var.tenant_id
+        azure_subscription_id = var.azure_subscription_id
+        client_secret         = var.client_secret
       }
       network = {
         vnets = {
