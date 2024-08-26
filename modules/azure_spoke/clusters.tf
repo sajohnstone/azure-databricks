@@ -97,6 +97,14 @@ resource "databricks_cluster" "gp_cluster" {
   }
 }
 
+resource "databricks_library" "pypi_libraries" {
+  for_each   = databricks_cluster.gp_cluster
+  cluster_id = each.value.id
+  pypi {
+    package = "requests"
+  }
+}
+
 resource "databricks_cluster" "job_serverless" {
   cluster_name            = "job-cluster-serverless"
   spark_version           = data.databricks_spark_version.latest_lts.id

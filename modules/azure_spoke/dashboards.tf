@@ -5,7 +5,7 @@ resource "databricks_directory" "shared" {
 
 # Create the /Shared/dashboards directory
 resource "databricks_directory" "dashboards" {
-  path = "/Shared/dashboards"
+  path       = "/Shared/dashboards"
   depends_on = [databricks_directory.shared]
 }
 
@@ -16,7 +16,7 @@ resource "databricks_dashboard" "users" {
   embed_credentials = false // Optional
   parent_path       = "/Shared/dashboards"
 
-  depends_on = [ databricks_sql_endpoint.serverless , databricks_directory.dashboards ]
+  depends_on = [databricks_sql_endpoint.serverless, databricks_directory.dashboards]
 }
 
 resource "databricks_dashboard" "jobs" {
@@ -26,7 +26,7 @@ resource "databricks_dashboard" "jobs" {
   embed_credentials = false // Optional
   parent_path       = "/Shared/dashboards"
 
-  depends_on = [ databricks_sql_endpoint.serverless , databricks_directory.dashboards ]
+  depends_on = [databricks_sql_endpoint.serverless, databricks_directory.dashboards]
 }
 
 resource "databricks_dashboard" "serverless" {
@@ -36,5 +36,5 @@ resource "databricks_dashboard" "serverless" {
   embed_credentials = false // Optional
   parent_path       = "/Shared/dashboards"
 
-  depends_on = [ databricks_sql_endpoint.serverless , databricks_directory.dashboards ]
+  depends_on = [databricks_sql_endpoint.serverless, databricks_directory.dashboards]
 }

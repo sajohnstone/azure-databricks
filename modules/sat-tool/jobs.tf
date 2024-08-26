@@ -9,7 +9,7 @@ resource "databricks_job" "initializer" {
 
   task {
     existing_cluster_id = var.job_cluster_id
-    task_key = "Initializer"
+    task_key            = "Initializer"
     library {
       pypi {
         package = "dbl-sat-sdk"
@@ -26,7 +26,7 @@ resource "databricks_job" "driver" {
 
   task {
     existing_cluster_id = var.job_cluster_id
-    task_key        = "Driver"
+    task_key            = "Driver"
     library {
       pypi {
         package = "dbl-sat-sdk"
