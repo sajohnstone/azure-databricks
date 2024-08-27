@@ -49,6 +49,7 @@ resource "databricks_cluster" "job_cluster" {
   cluster_name  = "job-cluster-${each.key}"
   spark_version = data.databricks_spark_version.latest_lts.id
   node_type_id  = each.value.node_type_id
+  policy_id     = databricks_cluster_policy.default.id
   num_workers   = 1
   autoscale {
     min_workers = 1
@@ -77,6 +78,7 @@ resource "databricks_cluster" "gp_cluster" {
   cluster_name  = "gp-cluster-${each.key}"
   spark_version = data.databricks_spark_version.latest_lts.id
   node_type_id  = each.value.node_type_id
+  policy_id     = databricks_cluster_policy.default.id
   autoscale {
     min_workers = 1
     max_workers = each.value.max_num_clusters
@@ -97,18 +99,26 @@ resource "databricks_cluster" "gp_cluster" {
   }
 }
 
+/*
 resource "databricks_library" "pypi_libraries" {
   for_each   = databricks_cluster.gp_cluster
   cluster_id = each.value.id
   pypi {
-    package = "requests"
+    package = "langchain"
   }
+}
+*/
+
+resource "databricks_cluster_policy" "default" {
+  name       = "Default cluster policy"
+  definition = file("${path.module}/cluster_policies/default.json")
 }
 
 resource "databricks_cluster" "job_serverless" {
   cluster_name            = "job-cluster-serverless"
   spark_version           = data.databricks_spark_version.latest_lts.id
   node_type_id            = "Standard_DS3_v2"
+  policy_id               = databricks_cluster_policy.default.id
   autotermination_minutes = 20
   autoscale {
     min_workers = 1

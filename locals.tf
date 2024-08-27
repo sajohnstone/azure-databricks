@@ -157,7 +157,7 @@ locals {
               source_address_prefix      = local.ifconfig_co_json.ip
               source_port_range          = "*"
             }
-          ]
+          ]       
         }
       }
     }

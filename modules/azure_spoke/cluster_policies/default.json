@@ -1,0 +1,12 @@
+{
+  "autotermination_minutes": {
+    "type": "range",
+    "defaultValue": 10,
+    "minValue": 10,
+    "maxValue": 120
+  },
+  "driver_node_type_id": {
+    "type": "fixed",
+    "value": "Standard_DS3_v2"
+  }
+}

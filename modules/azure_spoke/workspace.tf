@@ -69,13 +69,18 @@ resource "azurerm_databricks_workspace" "this" {
     data.azurerm_subnet.private,
     data.azurerm_virtual_network.spoke_vnet
   ]
+
+  lifecycle {
+    ignore_changes = [
+      custom_parameters
+    ]
+  }
 }
 
 resource "databricks_metastore_assignment" "this" {
-  provider = databricks.workspace
-
   metastore_id = var.metastore_id
   workspace_id = azurerm_databricks_workspace.this.workspace_id
+  depends_on   = [azurerm_databricks_workspace.this]
 }
 
 resource "azurerm_monitor_diagnostic_setting" "this" {

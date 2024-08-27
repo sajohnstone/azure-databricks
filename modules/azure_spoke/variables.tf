@@ -135,11 +135,6 @@ variable "sql_warehouse_sizes" {
       max_num_clusters = 1
       enable_photon    = false
     }
-    medium = {
-      cluster_size     = "Small"
-      max_num_clusters = 1
-      enable_photon    = false
-    }
   }
 }
 
@@ -153,10 +148,6 @@ variable "cluster_sizes" {
     small = {
       node_type_id     = "Standard_DS3_v2"
       max_num_clusters = 1
-    }
-    medium = {
-      node_type_id     = "Standard_DS3_v2"
-      max_num_clusters = 2
     }
   }
 }

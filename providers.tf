@@ -14,4 +14,7 @@ provider "databricks" {
   alias      = "account"
   host       = "https://accounts.azuredatabricks.net"
   account_id = var.databricks_account_id
+  azure_client_id     = local.workspace.databricks.client_id
+  azure_tenant_id     = local.workspace.databricks.tenant_id
+  azure_client_secret = local.workspace.databricks.client_secret
 }

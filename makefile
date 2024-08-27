@@ -31,7 +31,7 @@ set-env:
 prep: set-env
 	@docker-compose run --rm build terraform init
 	@echo "$(BOLD)Switching to workspace $(WORKSPACE)$(RESET)"
-	@docker-compose run --rm build terraform workspace select $(WORKSPACE) || terraform workspace new $(WORKSPACE)
+	@docker-compose run --rm build terraform workspace select $(WORKSPACE)
 	
 format: prep ## Rewrites all Terraform configuration files to a canonical format.
 	@docker-compose run --rm build terraform fmt -write=true -recursive

@@ -1,12 +1,6 @@
-# Ensure the /Shared directory exists
-resource "databricks_directory" "shared" {
-  path = "/Shared"
-}
-
 # Create the /Shared/dashboards directory
 resource "databricks_directory" "dashboards" {
   path       = "/Shared/dashboards"
-  depends_on = [databricks_directory.shared]
 }
 
 resource "databricks_dashboard" "users" {
