@@ -62,6 +62,12 @@ resource "azurerm_subnet_network_security_group_association" "abw-subnets" {
 
   subnet_id                 = azurerm_subnet.this[each.value.full_key].id
   network_security_group_id = azurerm_network_security_group.this[each.value.full_key].id
+
+  lifecycle {
+    ignore_changes = [
+      network_security_group_id
+    ]
+  }    
 }
 
 module "vnet_peering" {

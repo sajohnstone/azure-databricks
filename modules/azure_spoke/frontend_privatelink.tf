@@ -1,4 +1,6 @@
 resource "azurerm_private_endpoint" "frontend" {
+  count = var.boolean_adb_private_link == true ? 1 : 0
+
   name                = "${var.name}-frontend"
   location            = var.location
   resource_group_name = var.hub_resource_group_name
