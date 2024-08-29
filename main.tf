@@ -64,3 +64,15 @@ module "spoke" {
 
   depends_on = [module.hub]
 }
+
+module "rbac" {
+  source = "./modules/rbac"
+
+  providers = {
+    azurerm              = azurerm
+    databricks.account   = databricks.account
+    databricks.workspace = databricks.workspace
+  }
+
+  depends_on = [module.spoke]  
+}

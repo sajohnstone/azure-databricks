@@ -1,9 +1,3 @@
-# Create SQL Warehouses for each t-shirt size
-
-data "databricks_spark_version" "latest_lts" {
-  long_term_support = true
-}
-
 resource "databricks_sql_endpoint" "sql_warehouse" {
   for_each         = var.sql_warehouse_sizes
   name             = "sql-warehouse-${each.key}"
@@ -14,7 +8,7 @@ resource "databricks_sql_endpoint" "sql_warehouse" {
   min_num_clusters          = 1
   spot_instance_policy      = "COST_OPTIMIZED"
   enable_photon             = each.value.enable_photon
-  enable_serverless_compute = false
+  enable_serverless_compute = each.value.enable_serverless_compute
   auto_stop_mins            = 10
   tags {
     dynamic "custom_tags" {
@@ -27,26 +21,10 @@ resource "databricks_sql_endpoint" "sql_warehouse" {
   }
 }
 
-resource "databricks_sql_endpoint" "serverless" {
-  name                      = "sql-warehouse-serverless"
-  cluster_size              = "Small"
-  enable_serverless_compute = true
-  max_num_clusters          = 1
+resource "databricks_cluster" "cluster" {
+  for_each = var.cluster_sizes
 
-  tags {
-    dynamic "custom_tags" {
-      for_each = merge(var.tags)
-      content {
-        key   = custom_tags.key
-        value = custom_tags.value
-      }
-    }
-  }
-}
-
-resource "databricks_cluster" "job_cluster" {
-  for_each      = var.cluster_sizes
-  cluster_name  = "job-cluster-${each.key}"
+  cluster_name  = "${each.key}-cluster"
   spark_version = data.databricks_spark_version.latest_lts.id
   node_type_id  = each.value.node_type_id
   policy_id     = databricks_cluster_policy.default.id
@@ -58,84 +36,16 @@ resource "databricks_cluster" "job_cluster" {
   autotermination_minutes = 20
 
   spark_conf = {
-    "spark.master"                           = "local[*]"
     "spark.databricks.repl.allowedLanguages" = "python,sql",
-    "spark.databricks.cluster.profile"       = "SingleNode"
+    "spark.databricks.cluster.profile"       = each.value.profile
   }
 
   custom_tags = var.tags
 
   workload_type {
     clients {
-      jobs      = true
-      notebooks = false
-    }
-  }
-}
-
-resource "databricks_cluster" "gp_cluster" {
-  for_each      = var.cluster_sizes
-  cluster_name  = "gp-cluster-${each.key}"
-  spark_version = data.databricks_spark_version.latest_lts.id
-  node_type_id  = each.value.node_type_id
-  policy_id     = databricks_cluster_policy.default.id
-  autoscale {
-    min_workers = 1
-    max_workers = each.value.max_num_clusters
-  }
-  autotermination_minutes = 20
-
-  spark_conf = {
-    "spark.master" = "local[*]"
-  }
-
-  custom_tags = var.tags
-
-  workload_type {
-    clients {
-      jobs      = true
-      notebooks = false
-    }
-  }
-}
-
-/*
-resource "databricks_library" "pypi_libraries" {
-  for_each   = databricks_cluster.gp_cluster
-  cluster_id = each.value.id
-  pypi {
-    package = "langchain"
-  }
-}
-*/
-
-resource "databricks_cluster_policy" "default" {
-  name       = "Default cluster policy"
-  definition = file("${path.module}/cluster_policies/default.json")
-}
-
-resource "databricks_cluster" "job_serverless" {
-  cluster_name            = "job-cluster-serverless"
-  spark_version           = data.databricks_spark_version.latest_lts.id
-  node_type_id            = "Standard_DS3_v2"
-  policy_id               = databricks_cluster_policy.default.id
-  autotermination_minutes = 20
-  autoscale {
-    min_workers = 1
-    max_workers = 3
-  }
-
-  spark_conf = {
-    "spark.databricks.repl.allowedLanguages" = "python,sql",
-    "spark.databricks.cluster.profile"       = "serverless"
-  }
-
-  custom_tags = var.tags
-
-  workload_type {
-    clients {
-      jobs      = true
-      notebooks = false
+      jobs      = each.value.jobs
+      notebooks = each.value.notebooks
     }
   }
 }

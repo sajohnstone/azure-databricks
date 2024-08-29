@@ -50,3 +50,7 @@ data "azurerm_storage_account" "this" {
   name                = var.storage_account_name
   resource_group_name = var.resource_group_name
 }
+
+data "databricks_spark_version" "latest_lts" {
+  long_term_support = true
+}

@@ -7,8 +7,8 @@ module "sat-tool" {
 
   workspace_id   = module.spoke.workspace_id
   databricks_url = module.spoke.workspace_url
-  sqlw_id        = module.spoke.small_sql_warehouse_id
-  job_cluster_id = module.spoke.small_job_cluster_id
+  sqlw_id        = module.spoke.default_warehouse_id
+  job_cluster_id = module.spoke.default_cluster_id
 
   account_console_id = local.workspace.databricks.databricks_account_id
   client_id          = local.workspace.databricks.client_id

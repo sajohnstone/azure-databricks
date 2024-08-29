@@ -10,10 +10,18 @@ output "workspace_url" {
   value = azurerm_databricks_workspace.this.workspace_url
 }
 
-output "small_sql_warehouse_id" {
-  value = databricks_sql_endpoint.sql_warehouse["small"].id
+output "default_warehouse_id" {
+  value = databricks_sql_endpoint.sql_warehouse["default"].id
 }
 
-output "small_job_cluster_id" {
-  value = databricks_cluster.job_cluster["small"].id
+output "default_cluster_id" {
+  value = databricks_cluster.cluster["default"].id
+}
+
+output "serverless_warehouse_id" {
+  value = databricks_sql_endpoint.sql_warehouse["serverless"].id
+}
+
+output "serverless_cluster_id" {
+  value = databricks_cluster.cluster["serverless"].id
 }

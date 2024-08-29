@@ -125,29 +125,68 @@ variable "storage_account_name" {
 variable "sql_warehouse_sizes" {
   description = "Map of warehouse sizes and their configurations."
   type = map(object({
-    cluster_size     = string
-    max_num_clusters = number
-    enable_photon    = bool
+    cluster_size              = string
+    max_num_clusters          = number
+    enable_photon             = bool
+    enable_serverless_compute = bool
+    manage_groups             = list(string)
+    restart_groups            = list(string)
+    attach_groups             = list(string)
   }))
   default = {
-    small = {
-      cluster_size     = "2X-Small"
-      max_num_clusters = 1
-      enable_photon    = false
+    serverless = {
+      cluster_size              = "2X-Small"
+      max_num_clusters          = 1
+      enable_photon             = false
+      enable_serverless_compute = true
+      manage_groups             = ["analysts"]
+      restart_groups            = ["analysts"]
+      attach_groups             = [ "analysts", "ml_scientists"]
+    },
+    default = {
+      cluster_size              = "2X-Small"
+      max_num_clusters          = 1
+      enable_photon             = false
+      enable_serverless_compute = false
+      manage_groups             = ["analysts"]
+      restart_groups            = ["analysts"]
+      attach_groups             = [ "analysts", "ml_scientists"]
     }
   }
 }
 
 variable "cluster_sizes" {
-  description = "Map of both GP and Job clusters and their configurations."
+  description = "Map of cluster sizes and their configurations."
   type = map(object({
+    profile          = string # singleNode, default, highConcurrency, serverless
     node_type_id     = string
     max_num_clusters = number
+    jobs             = bool
+    notebooks        = bool
+    manage_groups    = list(string)
+    restart_groups   = list(string)
+    attach_groups    = list(string)
   }))
   default = {
-    small = {
+    serverless = {
+      profile          = "serverless"
       node_type_id     = "Standard_DS3_v2"
       max_num_clusters = 1
+      jobs             = true
+      notebooks        = true
+      manage_groups    = ["analysts"]
+      restart_groups   = ["analysts"]
+      attach_groups    = [ "analysts"]
+    },
+    default = {
+      profile          = "default"
+      node_type_id     = "Standard_DS3_v2"
+      max_num_clusters = 1
+      jobs             = true
+      notebooks        = true
+      manage_groups    = ["analysts"]
+      restart_groups   = ["analysts"]
+      attach_groups    = [ "analysts"]
     }
   }
 }
