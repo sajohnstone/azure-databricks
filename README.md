@@ -1,7 +1,7 @@
 # Terraform Azure Databricks Environment
 
 This project provides Terraform configurations to deploy an example Databricks environment to Azure. It uses Docker containers to manage tooling such as Terraform itself. The project also includes a Makefile to streamline common operations.
-Note: Since creating this repo I've found this repo (https://github.com/databricks/terraform-databricks-sra) which is an excellent resource. 
+Note: Since creating this repo I've found this repo (https://github.com/databricks/terraform-databricks-sra) which is an excellent resource.
 
 ## Project Structure
 
@@ -31,6 +31,11 @@ The Docker container is configured to run Terraform and other tooling required f
 
 - **`core`**: Install this first as this creates a VNet and Bastion that can be used to deploy databricks
 - **`databricks`**: If you enable full PrivateLink then you need to deploy from within your Azure VNet or it will fail.  
+
+### References
+
+Databricks SAT tool: https://github.com/databricks-industry-solutions/security-analysis-tool
+Databricks Dashboards: https://github.com/databricks/tmm/tree/main/System-Tables-Demo
 
 ### Commands
 
